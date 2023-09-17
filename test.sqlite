@@ -1,0 +1,110 @@
+WITH first_touch AS (
+    SELECT user_id,
+        MIN(timestamp) as first_touch_at
+    FROM page_visits
+    GROUP BY user_id)
+ 
+ SELECT ft.user_id,
+    COUNT(*) AS nb_first_touches,
+    ft.first_touch_at,
+    pv.utm_source,
+		pv.utm_campaign
+FROM first_touch ft
+JOIN page_visits pv
+    ON ft.user_id = pv.user_id
+    AND ft.first_touch_at = pv.timestamp
+GROUP BY utm_campaign; 
+
+SELECT * FROM first_touch;
+
+SELECT
+pv.utm_campaign,
+COUNT(*) AS nb_first_touches
+FROM first_touch ft 
+JOIN page_visits pv
+ON ft.user_id = pv.user_id
+AND ft.first_touch_at = pv.timestamp
+GROUP BY utm_campaign; 
+
+/* The results show that 3 of the campaigns are responsible for at least 576 touches each while the Cool TShirts search is responsible for the least number of touches. *./
+
+/* Given that the Search campaign is conducted on google, it can be inferred that people are not interested enough in the brand when they search it on Google. Other forms of marketing and communication are working better such as a video of an interview with the founder, a description of the company, and cool facts about the brand.
+
+Furthermore, 4 of the 8 campaigns have not contributed to any of the first touches. */
+
+SELECT COUNT(DISTINCT utm_campaign) AS 'Number of Campaigns'
+FROM page_visits; 
+
+/* The results show that CoolTShirts uses eight campaigns */
+
+SELECT COUNT(DISTINCT utm_source) AS 'Number of Sources'
+FROM page_visits;
+
+/* The results show that CoolTShirts uses six campaigns */
+
+SELECT 
+utm_campaign AS 'Campaign',
+utm_source AS 'Source'
+FROM page_visits
+GROUP BY utm_campaign;
+
+/* The results show that:
+- Google is used for 2 of the 8 campaigns
+- NYTimes is used for 1 of the 8 campaigns
+- Medium is used for 1 of the 8 campaigns
+- Facebook is used for 1 of the 8 campaigns
+- Buzzfeed is used for 1 of the 8 campaigns
+- Email is used for 2 of the 8 campaigns
+*/
+
+SELECT DISTINCT page_name AS 'Page Name'
+FROM page_visits;
+
+/* The results show that the CoolTShirts website has landing, shopping cart, checkout, and purchase pages. */
+
+WITH last_touch AS (
+  SELECT user_id,
+  MAX(timestamp) as last_touch_at
+  FROM page_visits
+  GROUP BY user_id
+)
+
+SELECT
+pv.utm_campaign,
+COUNT(*) AS nb_last_touches
+FROM page_visits pv 
+JOIN last_touch lt ON pv.user_id = lt.user_id
+AND pv.timestamp = lt.last_touch_at
+GROUP BY utm_campaign; 
+
+/* The results show that more of the 8 campaigns contributed to the recorded last touches. The weekly newsletter as well as the retargetting ad and campaign all contributed to the most last touches while the description of the company also played a significant role. Again, the search campaign is responsible for the least number of last touches. */
+
+SELECT COUNT(DISTINCT user_id) AS 'Number of Paying Customers'
+FROM page_visits
+WHERE page_name = '4 - purchase'
+
+/* The results show that 361 out of 1979 users made a purchase by reaching the purchase page. */
+
+SELECT 
+pv.utm_campaign,
+COUNT(*) AS nb_last_touches
+FROM page_visits pv
+JOIN last_touch lt ON lt.user_id = pv.user_id
+AND lt.last_touch_at = pv.timestamp
+WHERE pv.page_name = '4 - purchase'
+GROUP BY utm_campaign;
+
+/* The results show that the retargetting ad and the weekly newsletter are responsible for the most last touches on the purchase page. Other campaigns include the paid search and the retargetting campaign. 
+
+/* Ultimately, the most successful campaigns are those that lead to the most purchases. 
+
+Accordingly, the weekly newsletter and the retargetting ad campaigns are two campaigns which must be invested in to boost the business. Apart from that, the retargetting ad and the weekly newsletter are responsible for the most last touches. 
+
+Furthermore, the "getting to know cool tshirts" is responsible for a significant portion of both the first and last touches. Therefore, it is a campaign worth investing in as it is attracting first-time clickers.
+
+Similarly, the "interview with cool tshirts founder" and "ten crazy cool tshirts facts" campaigns are both attracting a large number of first touches and a decent number of last touches. Therefore, these 2 campaigns are worth reinvesting in. 
+
+
+
+
+
