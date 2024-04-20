@@ -2,7 +2,7 @@
 
 CoolTShirts, as the name suggests, is a business specialised in selling all kinds of T-Shirts. The company’s team recently launched a set of marketing campaigns withtheintentiontoboosttheir website traffic and purchase activity.
 
-This project will utilise the concept of touch attribution to analyse CoolTShirts’ page visits data and inform the company’s management team of optimise marketing campaigns and prioritise some of them based on their effectiveness.
+This project utilises the concept of touch attribution to analyse CoolTShirts’ page visits data and inform the company’s management team of optimise marketing campaigns and prioritise some of them based on their effectiveness.
 
 The analysis consisted of 7 stages:
 
